@@ -48,3 +48,23 @@ Test sequence: submit `Frank` with a UofT email, then `Frank Liu` with `Frank` (
 then `Frank Liu` with a non-UofT email. Result of the last submission:
 
 ![Activity 1.4 non-UofT email result with name and email change warnings](screenshots/activity-1-4.png)
+
+## Activity 2: Docker
+
+The app is containerized with the `Dockerfile` in the repository root. Dependencies are pinned in
+`requirements.txt`, and `.dockerignore` keeps the local `venv/`, `.git/` and screenshots out of the image.
+
+Build the image and run a container:
+
+```
+docker build -t python-docker .
+docker run -d -p 5000:5000 --name pra3-flask python-docker
+docker ps -a
+```
+
+The application is then available at http://localhost:5000. Stop and remove the container with:
+
+```
+docker stop pra3-flask
+docker rm pra3-flask
+```
