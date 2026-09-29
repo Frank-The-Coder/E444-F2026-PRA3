@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Flasky - Chatbot{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>Hello, {{ name }}! Welcome to PRA3 Docker!</h1>
+    <p class="lead">Chat with the PRA3 bot. Try "My name is Alice." and then "What is my name?"</p>
+</div>
+
+<div id="chat-log" class="well" style="height: 300px; overflow-y: auto;"></div>
+
+<form id="chat-form" class="form-inline" autocomplete="off">
+    <div class="form-group">
+        <input id="chat-message" type="text" class="form-control" style="width: 420px;"
+               placeholder="Type a message" required>
+    </div>
+    <button id="chat-send" type="submit" class="btn btn-primary">Send</button>
+</form>
+
+<form action="{{ url_for('logout') }}" method="post" style="margin-top: 20px;">
+    <button id="logout" type="submit" class="btn btn-danger">Logout</button>
+</form>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+    const chatLog = document.getElementById('chat-log');
+    const chatForm = document.getElementById('chat-form');
+    const chatInput = document.getElementById('chat-message');
+
+    // Add one line to the conversation. textContent keeps user text from being parsed as HTML.
+    function addLine(sender, text) {
+        const line = document.createElement('p');
+        const who = document.createElement('strong');
+        who.textContent = sender + ': ';
+        line.appendChild(who);
+        line.appendChild(document.createTextNode(text));
+        chatLog.appendChild(line);
+        chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    chatForm.addEventListener('submit', async function (event) {
+        event.preventDefault();               // stay on this page instead of reloading it
+        const message = chatInput.value.trim();
+        if (!message) return;
+        addLine('You', message);
+        chatInput.value = '';
+
+        // fetch() sends the session cookie automatically because /chat is on the same site
+        const response = await fetch('{{ url_for("chat") }}', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: message })
+        });
+        const data = await response.json();
+        addLine('Bot', data.reply);
+    });
+</script>
+{% endblock %}
