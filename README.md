@@ -68,3 +68,29 @@ The application is then available at http://localhost:5000. Stop and remove the 
 docker stop pra3-flask
 docker rm pra3-flask
 ```
+
+## Activity 2.5: Chatbot with Memory
+
+After a name and a valid UofT email are submitted, the app redirects to `/chatbot`. The page sends each
+message as JSON to the `/chat` endpoint with `fetch()` and shows the bot's reply in the chat area.
+
+- "My name is Alice." stores `Alice` in `session["chat_name"]` and replies "Nice to meet you, Alice!".
+- "What is my name?" reads `session["chat_name"]` in a later request and replies "Your name is Alice.".
+- The Logout button posts to `/logout`, which calls `session.clear()` and returns to the Home page.
+  The application keeps running; only this browser's remembered data is removed.
+
+**Where is the information stored?** In Flask's default session, which is a cookie named `session`
+kept in the user's browser. Its content is base64-encoded JSON plus a signature made with `SECRET_KEY`.
+Anyone can read the content, but Flask rejects the cookie if it has been modified.
+
+**How does Flask know two requests come from the same user?** The browser sends the `session` cookie
+back with every request to the same site, including the `fetch()` calls to `/chat`. Flask verifies the
+signature, loads the data into `session`, and sends an updated cookie when the data changes.
+
+Memory before logging out:
+
+![Chatbot remembers the name Alice across requests](screenshots/activity-2-5-memory.png)
+
+After logging out and returning through the name and email form, the name is forgotten:
+
+![Chatbot no longer remembers the name after logout](screenshots/activity-2-5-after-logout.png)
