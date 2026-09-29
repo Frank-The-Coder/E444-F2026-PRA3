@@ -33,3 +33,18 @@ a "Hello Frank!" title, and the local time rendered by Flask-Moment in `LLLL` fo
 `http://127.0.0.1:5000/`
 
 ![Activity 1.3 home page with navbar, Hello Frank title and LLLL timestamp](screenshots/activity-1-3.png)
+
+## Activity 1.4: Web Forms (Chapter 4)
+
+Example 4-7 adds a name form that stores the name in the user session, redirects after POST,
+and flashes a message when the name changes. On top of that, the form now asks for a UofT email:
+
+- A valid email containing `utoronto` shows the name and the email address.
+- Any other valid email shows "Please use your UofT email."
+- A value without `@` is blocked by the browser, because the field is an HTML5 `type="email"` input.
+- Changing the name or the email flashes a warning above the title.
+
+Test sequence: submit `Frank` with a UofT email, then `Frank Liu` with `Frank` (blocked by the browser),
+then `Frank Liu` with a non-UofT email. Result of the last submission:
+
+![Activity 1.4 non-UofT email result with name and email change warnings](screenshots/activity-1-4.png)
