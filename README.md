@@ -24,3 +24,12 @@ flask --app hello run
 `http://127.0.0.1:5000/user/Frank`
 
 ![Example 2-2 dynamic route showing Hello, Frank](screenshots/example-2-2.png)
+
+## Activity 1.3: Templates, Bootstrap and Flask-Moment (Chapter 3)
+
+The home page extends a shared `base.html` built on Flask-Bootstrap. It shows a navigation bar,
+a "Hello Frank!" title, and the local time rendered by Flask-Moment in `LLLL` format.
+
+`http://127.0.0.1:5000/`
+
+![Activity 1.3 home page with navbar, Hello Frank title and LLLL timestamp](screenshots/activity-1-3.png)
